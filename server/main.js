@@ -1,3 +1,6 @@
+var os = require("os");
+if (!os.tmpDir) os.tmpDir = os.tmpdir;
+
 var bodyParser = require("body-parser");
 var express = require("express");
 var formidable = require("formidable");

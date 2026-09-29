@@ -1,0 +1,299 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>PLEASE HOLD — Desk</title>
+  <style>
+    html, body { margin: 0; height: 100%; background: #050505; color: #f4f4f4; }
+    body {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+      letter-spacing: 0.5px;
+    }
+    #monitor {
+      min-height: 100%;
+      box-sizing: border-box;
+      padding: 18px 22px 16px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      grid-template-rows: auto 1fr auto auto;
+      gap: 8px 16px;
+    }
+    #clock { grid-column: 2; grid-row: 1; text-align: right; line-height: 0.9; }
+    #wwo-time { font-size: 64px; }
+    #wwo-night { font-size: 22px; margin-top: 4px; }
+    #map-wrap { grid-column: 1 / -1; grid-row: 2; position: relative; min-height: 0; }
+    #wwo-map {
+      width: 100%;
+      height: min(62vh, 640px);
+      display: block;
+      background: #070707;
+      image-rendering: pixelated;
+    }
+    #notebook, #notes-tab {
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+      color: #1a120c;
+    }
+    #wwo-ready {
+      position: fixed;
+      z-index: 10;
+      left: 50%;
+      bottom: 16px;
+      transform: translateX(-50%);
+      font-size: 22px;
+      padding: 12px 28px;
+    }
+    #wwo-ready.on { background: #6fbf3a; color: #111; }
+    #wwo-ready:disabled { opacity: 1; cursor: default; }
+    #wwo-count {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 12;
+      align-items: center;
+      justify-content: center;
+      font-size: 180px;
+      letter-spacing: 4px;
+      pointer-events: none;
+      color: #f4f4f4;
+      text-shadow: 0 0 18px #000;
+    }
+    #notebook {
+      position: fixed;
+      z-index: 7;
+      left: 50%;
+      top: 16px;
+      transform: translateX(-50%) rotate(-1deg);
+      width: min(640px, calc(100vw - 36px));
+      max-height: calc(100vh - 110px);
+      overflow: auto;
+      box-sizing: border-box;
+      padding: 18px 26px 16px 42px;
+      background:
+        linear-gradient(#e7b3b3, #e7b3b3) 34px 0 / 2px 100% no-repeat,
+        repeating-linear-gradient(to bottom, transparent 0 23px, rgba(80, 40, 40, 0.18) 24px);
+      background-color: #f3e2c0;
+      border: 3px solid #2a2118;
+      box-shadow: 8px 10px 0 rgba(0, 0, 0, 0.45);
+      cursor: pointer;
+      line-height: 24px;
+    }
+    #notebook h2 { margin: 0 0 6px; font-size: 20px; letter-spacing: 1px; }
+    #notebook p { margin: 0 0 8px; font-size: 15px; }
+    #notebook .shut { margin: 8px 0; font-size: 14px; }
+    #notes-tab {
+      display: none;
+      position: fixed;
+      z-index: 9;
+      left: 12px;
+      top: 12px;
+      padding: 0;
+      background: transparent;
+      border: none;
+      box-shadow: none;
+      cursor: pointer;
+      line-height: 0;
+    }
+    #notes-tab svg { display: block; }
+    #meters {
+      grid-column: 1;
+      grid-row: 3;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      align-items: flex-start;
+      font-size: 22px;
+    }
+    #wwo-vital-row, #wwo-power-row { display: flex; align-items: center; gap: 10px; }
+    #wwo-vital {
+      width: 220px;
+      height: 36px;
+      background: transparent;
+      border: none;
+      image-rendering: pixelated;
+    }
+    #wwo-agent { display: block; }
+    #wwo-agent .agent { fill: #3dce4a; }
+    #wwo-battery { position: relative; width: 34px; height: 48px; }
+    #wwo-battery .cap {
+      position: absolute;
+      left: 9px;
+      top: 0;
+      width: 16px;
+      height: 6px;
+      background: #f4f4f4;
+    }
+    #wwo-battery .body {
+      position: absolute;
+      left: 0;
+      right: 0;
+      top: 6px;
+      bottom: 0;
+      border: 3px solid #f4f4f4;
+      background: #111;
+      box-sizing: border-box;
+      overflow: hidden;
+    }
+    #wwo-battery-fill {
+      position: absolute;
+      left: 3px;
+      right: 3px;
+      bottom: 3px;
+      height: 100%;
+      background: #3dce4a;
+    }
+    #wwo-battery-fill.mid { background: #e2c043; }
+    #wwo-battery-fill.low { background: #e23b32; }
+    #wwo-doors { grid-column: 2; grid-row: 3; display: flex; gap: 8px; align-items: end; justify-content: flex-end; }
+    button {
+      font-family: inherit;
+      font-weight: 700;
+      font-size: 16px;
+      color: #f4f4f4;
+      background: #2b2b2b;
+      border: 3px solid #f4f4f4;
+      border-radius: 0;
+      padding: 8px 12px;
+      cursor: pointer;
+      letter-spacing: 1px;
+    }
+    #wwo-doors button.gate-R { border-color: #e23b32; color: #e23b32; }
+    #wwo-doors button.gate-Y { border-color: #e2c043; color: #e2c043; }
+    #wwo-doors button.gate-G { border-color: #6fbf3a; color: #6fbf3a; }
+    #wwo-doors button.gate-R.open { background: #e23b32; color: #111; }
+    #wwo-doors button.gate-Y.open { background: #e2c043; color: #111; }
+    #wwo-doors button.gate-G.open { background: #6fbf3a; color: #111; }
+    button:disabled { opacity: 0.4; cursor: default; }
+    #wwo-log {
+      grid-column: 1 / -1;
+      grid-row: 4;
+      min-height: 1.3em;
+      font-size: 16px;
+    }
+    #wwo-end {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 9;
+      background: rgba(0, 0, 0, 0.72);
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      pointer-events: none;
+    }
+    #wwo-end > div {
+      background: #111;
+      border: 3px solid #f4f4f4;
+      padding: 28px 36px 24px;
+      max-width: min(640px, calc(100vw - 48px));
+    }
+    #wwo-end h2 { margin: 0; font-size: 84px; letter-spacing: 4px; }
+    #wwo-end p { margin: 10px 0 0; font-size: 22px; }
+    #wwo-reset {
+      pointer-events: auto;
+      margin-top: 22px;
+      font-family: "Courier New", Courier, monospace;
+      font-weight: 700;
+      font-size: 22px;
+      letter-spacing: 1px;
+      color: #111;
+      background: #f4f4f4;
+      border: 3px solid #f4f4f4;
+      padding: 12px 28px;
+      cursor: pointer;
+    }
+    #scan, #flick {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 8;
+    }
+    #scan {
+      background: repeating-linear-gradient(
+        to bottom,
+        rgba(0, 0, 0, 0.28) 0px,
+        rgba(0, 0, 0, 0.28) 1px,
+        transparent 2px,
+        transparent 4px
+      );
+      opacity: 0.55;
+    }
+    #flick {
+      background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.04), transparent);
+      background-size: 100% 18%;
+      animation: roll 7s linear infinite;
+      mix-blend-mode: screen;
+      opacity: 0.35;
+    }
+    @keyframes roll {
+      from { background-position: 0 -40%; }
+      to { background-position: 0 140%; }
+    }
+  </style>
+</head>
+<body>
+  <div id="monitor">
+    <div id="clock">
+      <div id="wwo-time">04:00</div>
+      <div id="wwo-night">LOCKDOWN</div>
+    </div>
+    <div id="map-wrap">
+      <canvas id="wwo-map" width="960" height="640"></canvas>
+    </div>
+    <div id="meters">
+      <div id="wwo-vital-row">
+        <svg id="wwo-agent" viewBox="0 0 28 36" width="28" height="36" aria-label="Agent 007">
+          <circle class="agent" cx="14" cy="7" r="6"/>
+          <rect class="agent" x="9" y="5" width="10" height="3"/>
+          <rect x="10" y="5.5" width="8" height="2" fill="#111"/>
+          <rect class="agent" x="7" y="14" width="14" height="11"/>
+          <rect class="agent" x="7" y="26" width="5" height="8"/>
+          <rect class="agent" x="16" y="26" width="5" height="8"/>
+        </svg>
+        <canvas id="wwo-vital" width="220" height="36"></canvas>
+      </div>
+      <div id="wwo-power-row">
+        <span id="wwo-battery"><i class="cap"></i><span class="body"><i id="wwo-battery-fill"></i></span></span>
+        <b id="wwo-power">100%</b>
+      </div>
+    </div>
+    <div id="wwo-doors"></div>
+    <div id="wwo-log">NO SIGNAL</div>
+  </div>
+  <button id="notes-tab" type="button" aria-label="Notes">
+    <svg viewBox="0 0 32 40" width="32" height="40">
+      <rect x="3" y="2" width="24" height="36" fill="#f3e2c0" stroke="#2a2118" stroke-width="2"/>
+      <line x1="9" y1="2" x2="9" y2="38" stroke="#e7b3b3" stroke-width="2"/>
+      <line x1="13" y1="12" x2="23" y2="12" stroke="#2a2118" stroke-width="1.6"/>
+      <line x1="13" y1="18" x2="23" y2="18" stroke="#2a2118" stroke-width="1.6"/>
+      <line x1="13" y1="24" x2="20" y2="24" stroke="#2a2118" stroke-width="1.6"/>
+    </svg>
+  </button>
+  <div id="notebook">
+    <h2>FIELD NOTES</h2>
+    <p>Agent 007 and Agent 014 (You) followed an anonymous tip into DefinitelySafe.co. Agent 007 went into the company to gather proof. Agent 014 stayed in a stolen security room. The moment they were inside, the building locked itself down.</p>
+    <p>Your goal is for 007 to escape the building (reach EXIT) before the power runs out and the monster catches him! </p>
+    <p>Agent 014 sees the monitor, however it consumes power. Each percent lasts 4 seconds, and at zero the building goes dark. The green room is where Agent 007 is. And there's apperently a mysterious monster in the building. The red icon is the monster, and that camera stays on even in a dark room. It is a little slower than 007. The exit stays lit.</p>
+    <p>Unprepared as always, 007 knows little about the map, you need to help him! Communicate to him about what you see, where to go, and how to escape from this madness!</p>
+    <p>Lit rooms show icons for what Agent 007 can still pick up. A green battery is worth 50% once it is used. A blue star freezes the Abomination for 5 seconds. Orange arrows make Agent 007 run faster for 5 seconds. A yellow bolt is the generator for the next dark wing. Red, yellow, and green badges are doors. A filled badge is open. An empty one is shut. Keys 1, 2, and 3 throw that color, and each throw costs 10% power. Yellow is the way out. The line beside Agent 007 is a pulse. It turns from green to red and shakes as the Abomination gets closer. The battery under it is the monitor's charge.</p>
+    <p>Best of luck and see you on the outside!</p>
+    <p class="shut">Click the notebook to set it aside.</p>
+  </div>
+  <button id="wwo-ready" type="button">READY</button>
+  <div id="wwo-count"></div>
+  <div id="wwo-end">
+    <div>
+      <h2 id="wwo-end-title"></h2>
+      <p id="wwo-end-body"></p>
+      <button id="wwo-reset" type="button">RESET</button>
+    </div>
+  </div>
+  <div id="flick"></div>
+  <div id="scan"></div>
+  <script src="/js/util/peerjs.min.js"></script>
+  <script src="/server/client.js"></script>
+  <script type="module" src="./desk.js"></script>
+</body>
+</html>
