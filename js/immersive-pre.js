@@ -577,7 +577,7 @@ function fixEmulatorOffsetSpaces(refSpace) {
 
 function onRequestSession() {
     // With the emulator, end the inline session first, then request again.
-    // The page stops rendering until it is reloaded.
+    // The page reloads when XR ends (see onSessionEnded).
     if (emulatorView && emulatorView.style.display == "none") {
         emulatorView.style.display = emulatorViewDisplay;
         return xrSession.end().then(onRequestSession);
@@ -747,6 +747,11 @@ function onSessionEnded(event) {
 
         // Stop the audio playback when we exit XR.
         // pauseAudio();
+
+        // With the emulator the inline session was ended to enter XR,
+        // so the page has nothing left to render with. Start over.
+        if (emulatorView)
+            location.reload();
     }
 }
 
