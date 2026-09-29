@@ -1,16 +1,19 @@
 const ensureDeskLink = () => {
    const header = document.getElementById("header");
-   if (!header || !header.innerHTML.includes(">PLEASE HOLD<")) return;
+   if (!header) return;
+   const sceneBtn = [...header.querySelectorAll("button")].find(b => b.textContent.trim() === "PLEASE HOLD");
+   if (!sceneBtn) return;
+   sceneBtn.onclick = () => {
+      window.chooseFlag("PLEASE HOLD");
+      if (window.syncDemos) window.syncDemos();
+   };
    if (document.getElementById("wwo-desk-link")) return;
-   const a = document.createElement("a");
-   a.id = "wwo-desk-link";
-   a.href = "/js/scenes/MazeRunner/desk.html";
-   a.target = "_blank";
-   a.rel = "noopener";
-   a.textContent = "PLEASE HOLD Desk";
-   a.style.margin = "0 8px";
-   a.style.fontWeight = "700";
-   header.appendChild(a);
+   const desk = document.createElement("button");
+   desk.id = "wwo-desk-link";
+   desk.type = "button";
+   desk.textContent = "PLEASE HOLD Desk";
+   desk.onclick = () => window.open("/js/scenes/MazeRunner/desk.html", "_blank", "noopener");
+   sceneBtn.insertAdjacentElement("afterend", desk);
 };
 
 const watchHeader = () => {
