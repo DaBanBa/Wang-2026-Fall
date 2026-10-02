@@ -12,7 +12,7 @@ const ensureDeskLink = () => {
    desk.id = "wwo-desk-link";
    desk.type = "button";
    desk.textContent = "PLEASE HOLD Desk";
-   desk.onclick = () => window.open("/js/scenes/MazeRunner/desk.html", "_blank", "noopener");
+   desk.onclick = () => window.open("/js/scenes/PLEASEHOLD/desk.html", "_blank", "noopener");
    sceneBtn.insertAdjacentElement("afterend", desk);
 };
 
@@ -37,7 +37,7 @@ export default () => {
             { name: "interact" , path: "./interact.js" , public: true },
             { name: "beam"     , path: "./beam.js"     , public: true },
             { name: "HPWand"   , path: "./HPWand.js"   , public: true },
-            { name: "PLEASE HOLD" , path: "./MazeRunner/game.js", public: true },
+            { name: "PLEASE HOLD" , path: "./PLEASEHOLD/game.js", public: true },
       ]
    };
 }

@@ -398,9 +398,13 @@ export const init = async model => {
       </button>
       <div id="wwo-vr-book">
         <h2>FIELD NOTES</h2>
-        <p>Agent 007 (You) and Agent 014 followed an anonymous tip into Definitely Safe (TM) Laboratories. Agent 007 went into the halls to gather proof. Agent 014 stayed in a stolen security room. The moment they were inside, the building locked itself down.</p>
-        <p>Agent 007 only sees what is nearby. The monitor starts at half power. Each percent lasts 2 seconds, and at zero the building goes dark. Left X and right A grab an object. Each hand holds one. Press the same button again to use it. A full hand cannot grab or turn a wire tile. The green battery is worth 50%, up to a full charge. The blue star freezes the Abomination for 5 seconds. The orange arrows make Agent 007 run faster for 5 seconds.</p>
-        <p>Left stick walks. Right stick turns. An empty hand's trigger turns a wire tile. Wire panels restore cameras for Agent 014. Agent 014 throws the doors, and each throw costs 10% power. Agent 007 cannot throw a gate. Yellow is the way out.</p>
+        <p>Agent 007 (You) and Agent 014 followed an anonymous tip into Definitely Safe (TM) Laboratories.</p>
+        <p>Agent 007 went into the halls to gather proof. Agent 014 stayed in a stolen security room. The moment they were inside, the building locked itself down.</p>
+        <p>Agent 007 only sees what is nearby. The monitor starts at half power. Each percent lasts 2 seconds, and at zero the building goes dark.</p>
+        <p>Left X and right A grab an object. Each hand holds one. Press the same button again to use it. A full hand cannot grab or turn a wire tile.</p>
+        <p>The green battery is worth 50%, up to a full charge. The blue star freezes the Abomination for 5 seconds. The orange arrows make Agent 007 run faster for 5 seconds.</p>
+        <p>Left stick walks. Right stick turns. An empty hand's trigger turns a wire tile.</p>
+        <p>Wire panels restore cameras for Agent 014. Agent 014 throws the doors, and each throw costs 10% power. Agent 007 cannot throw a gate. Yellow is the way out.</p>
         <p>Press left X and right A together to ready up. Nothing starts until Agent 007 and Agent 014 have both readied. Then the lockdown begins in 5.</p>
         <p>Click the notebook to set it aside.</p>
       </div>
