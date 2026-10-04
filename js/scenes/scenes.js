@@ -15,6 +15,7 @@ export default () => {
             { name: "construct" , path: "./construct.js" , public: true },
             { name: "HPWand"    , path: "./HPWand.js"    , public: true },
             { name: "PLEASE HOLD", path: "./PLEASEHOLD/game.js", public: true },
+            { name: "Overcooked" , path: "./Overcooked/game.js", public: true },
       ]
    };
 }
