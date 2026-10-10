@@ -16,6 +16,7 @@ export default () => {
             { name: "HPWand"    , path: "./HPWand.js"    , public: true },
             { name: "PLEASE HOLD", path: "./PLEASEHOLD/game.js", public: true },
             { name: "Overcooked" , path: "./Overcooked/game.js", public: true },
+            { name: "aiquery"   , path: "./aiquery.js"   , public: true },
       ]
    };
 }
