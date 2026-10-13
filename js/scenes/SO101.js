@@ -4,12 +4,9 @@ import { stl } from '../render/core/stl.js';
 // Render the SO101 robot arm.
 
 export const init = async model => {
-   // Mesh colors from the urdf materials.
+   const printed = [1,.82,.12], motor = [.1,.1,.1];     // COLOR PALETTE FOR ROBOT PARTS
 
-   const printed = [1, .82, .12], motor = [.1, .1, .1];
-
-   // The meshes of each link, keyed by link name. Each mesh is the name of a file in media/stl/SO101,
-   // with its xyz and rpy relative to the link's frame.
+   // THE MESH OF EACH LINK IS THE NAME OF A FILE IN media/stl/SO101. EACH LINK'S xyz AND rpy ARE RELATIVE TO THAT LINK'S FRAME.
 
    const links = {
       base_link: [
@@ -47,84 +44,52 @@ export const init = async model => {
    };
 
    const joints = [
-      { name: 'shoulder_pan' , parent: 'robotBaseFrame', xyz: [ 0.0388353,  0        ,  0.0624], rpy: [ 3.14159, 0        , -3.14159], lo: -1.91986 , hi: 1.91986, link: 'shoulder_link' },
-      { name: 'shoulder_lift', parent: 'shoulder_pan'  , xyz: [-0.0303992, -0.0182778, -0.0542], rpy: [-1.5708 ,-1.5708   ,  0      ], lo: -1.74533 , hi: 1.74533, link: 'upper_arm_link' },
-      { name: 'elbow_flex'   , parent: 'shoulder_lift' , xyz: [-0.11257  , -0.028    ,  0     ], rpy: [ 0      , 0        ,  1.5708 ], lo: -1.69    , hi: 1.69   , link: 'lower_arm_link' },
-      { name: 'wrist_flex'   , parent: 'elbow_flex'    , xyz: [-0.1349   ,  0.0052   ,  0     ], rpy: [ 0      , 0        , -1.5708 ], lo: -1.65806 , hi: 1.65806, link: 'wrist_link' },
-      { name: 'wrist_roll'   , parent: 'wrist_flex'    , xyz: [ 0        , -0.0611   ,  0.0181], rpy: [ 1.5708 , 0.0486795, 3.14159 ], lo: -2.74385 , hi: 2.84121, link: 'gripper_link' },
-
-      // gripper_link has two children: the moving jaw and a fixed tool-tip frame.
-      { name: 'gripper'      , parent: 'wrist_roll'   , xyz: [ 0.0202   ,  0.0188     , -0.0234   ], rpy: [ 1.5708 , 0      ,  0], lo: -0.174533, hi: 1.74533, link: 'moving_jaw_so101_v1_link' },
-      { name: 'gripper_frame', parent: 'wrist_roll'   , xyz: [-0.0079   , -0.000218121, -0.0981274], rpy: [ 0      , 3.14159,  0], fixed: true, link: 'gripper_frame_link' },
+      { name: 'shoulder_pan' , parent: 'robotBaseFrame', xyz: [ 0.0388353,  0          ,  0.0624   ], rpy: [ 3.14159, 0        , -3.14159], lo: -1.91986 , hi: 1.91986, link: 'shoulder_link'            },
+      { name: 'shoulder_lift', parent: 'shoulder_pan'  , xyz: [-0.0303992, -0.0182778  , -0.0542   ], rpy: [-1.5708 ,-1.5708   ,  0      ], lo: -1.74533 , hi: 1.74533, link: 'upper_arm_link'           },
+      { name: 'elbow_flex'   , parent: 'shoulder_lift' , xyz: [-0.11257  , -0.028      ,  0        ], rpy: [ 0      , 0        ,  1.5708 ], lo: -1.69    , hi: 1.69   , link: 'lower_arm_link'           },
+      { name: 'wrist_flex'   , parent: 'elbow_flex'    , xyz: [-0.1349   ,  0.0052     ,  0        ], rpy: [ 0      , 0        , -1.5708 ], lo: -1.65806 , hi: 1.65806, link: 'wrist_link'               },
+      { name: 'wrist_roll'   , parent: 'wrist_flex'    , xyz: [ 0        , -0.0611     ,  0.0181   ], rpy: [ 1.5708 , 0.0486795,  3.14159], lo: -2.74385 , hi: 2.84121, link: 'gripper_link'             },
+      { name: 'gripper'      , parent: 'wrist_roll'    , xyz: [ 0.0202   ,  0.0188     , -0.0234   ], rpy: [ 1.5708 , 0        ,  0      ], lo: -0.174533, hi: 1.74533, link: 'moving_jaw_so101_v1_link' },
+      { name: 'gripper_frame', parent: 'wrist_roll'    , xyz: [-0.0079   , -0.000218121, -0.0981274], rpy: [ 0      , 3.14159  ,  0      ], fixed: true,                link: 'gripper_frame_link'       },
    ];
 
-   //Load the models
-   let isLoading = {};
-   for (const meshList of Object.values(links))
-   {
+   for (const meshList of Object.values(links))         // START LOADING THE ROBOT PARTS
       for (let mesh of meshList)
-      {
-         console.log(model.stl);
-         let fileAddr = 'SO101/' + mesh.stl;
-         if(!isLoading[fileAddr])
-         {
-            isLoading[fileAddr] = true;
-            stl(fileAddr);
-         }
-      }
-   }
+            stl('SO101/' + mesh.stl);
 
-   let robotBaseFrame = model.add().move(0,1,-1).turnX(-Math.PI/2).scale(3);
-   robotBaseFrame.add('tubeZ').scale(.04,.04,.005).color(.3,.3,.3);
+   let robotBaseFrame = model.add().move(0,1.5,-1).turnX(-Math.PI/2).scale(3);
    let node = {};
    node['robotBaseFrame'] = robotBaseFrame;
 
-   for (let j of joints) {
-      let parentNode = node[j.parent];              // Get parent node by name in the table.
-      let currentJointName = j.name;                // Get name of the current table element.
-
-      node[currentJointName] = parentNode.add().move(j.xyz)      // Add a child to previous joint node. This is new joint node that we are working with now.
-                                                .turnZ(j.rpy[2])
-                                                .turnY(j.rpy[1])
-                                                .turnX(j.rpy[0]);
-      let curJointNode = node[currentJointName];
-
-      let length = cg.norm(j.xyz);                               // j.xyz is the xyz position relative to parent's object space (a vector from j1 to j2).
-      curJointNode.add('sphere').scale(.008).color(1,0,0);
-      
-      /*if (length > 0)
-         parentNode.add('cube').move(cg.scale(j.xyz,.5)).aimZ(j.xyz).scale(.006,.006,.5*length).color(.6,.6,.6);
-      */
-   }
+   for (let j of joints)                                // CREATE THE KINEMATIC JOINT HIERARCHY
+      node[j.name] = node[j.parent].add();
 
    model.animate(() => {
-      //Base
-      for(let mesh of links['base_link'])
-      {
+      for(let mesh of links['base_link']) {             // CREATE THE ROBOT BASE
          let partName = 'SO101/' + mesh.stl;
-         if (clay.formMesh(partName) && ! mesh.part) //js can add part to the mesh object at runtime with this syntax. Undefined if not set does not cause crash.
-         {
+         if (clay.formMesh(partName) && ! mesh.part)
             mesh.part = node['robotBaseFrame'].add(partName).move(mesh.xyz)
-                                                   .turnZ(mesh.rpy[2])
-                                                   .turnY(mesh.rpy[1])
-                                                   .turnX(mesh.rpy[0])
-                                                   .color(mesh.color);
-         }
+                                                            .turnZ(mesh.rpy[2])
+                                                            .turnY(mesh.rpy[1])
+                                                            .turnX(mesh.rpy[0])
+                                                            .color(mesh.color);
       }
-      for(let j of joints)
-      {
-         for(let mesh of links[j.link])
-         {
-            let partName = 'SO101/' + mesh.stl;
-            if (clay.formMesh(partName) && ! mesh.part) //js can add part to the mesh object at runtime with this syntax. Undefined if not set does not cause crash.
-            {
-               mesh.part = node[j.name].add(partName).move(mesh.xyz)
-                                                      .turnZ(mesh.rpy[2])
-                                                      .turnY(mesh.rpy[1])
-                                                      .turnX(mesh.rpy[0])
-                                                      .color(mesh.color);
-            }
-         }
+
+      for(let j of joints)                              // CREATE THE ALL THE OTHER ROBOT PARTS
+      for(let mesh of links[j.link]) {
+         let partName = 'SO101/' + mesh.stl;
+         if (clay.formMesh(partName) && ! mesh.part)
+            mesh.part = node[j.name].add(partName).move(mesh.xyz)
+                                                  .turnZ(mesh.rpy[2])
+                                                  .turnY(mesh.rpy[1])
+                                                  .turnX(mesh.rpy[0])
+                                                  .color(mesh.color);
       }
+
+      for (let j of joints)                             // ANIMATE THE ROBOT
+         node[j.name].identity().move(j.xyz)
+                                .turnZ(j.rpy[2])
+                                .turnY(j.rpy[1])
+                                .turnX(j.rpy[0]);
    });
 }
