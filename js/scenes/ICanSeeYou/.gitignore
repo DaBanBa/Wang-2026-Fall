@@ -1,0 +1,8 @@
+backend/.env
+backend/.venv/
+backend/data/
+backend/models/
+backend/people/
+backend/*.pt
+backend/*.db
+__pycache__/

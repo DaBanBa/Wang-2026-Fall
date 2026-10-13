@@ -1,0 +1,6 @@
+ultralytics>=8.4.0      # YOLO26 + BoT-SORT
+lap>=0.5.12             # needed by the BoT-SORT tracker
+opencv-python           # also does local face matching (YuNet + SFace)
+numpy
+openai>=1.60            # summaries, web research, Whisper API fallback
+faster-whisper          # local Whisper (optional; remove to use the OpenAI Whisper API instead)

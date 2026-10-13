@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8" />
+  <title>Casting</title>
+</head>
+<body>
+  <p>
+    <button id="capture">Start capture</button>
+    <span id="status">Connecting...</span>
+  </p>
+  <canvas id="preview" width="960" height="540" hidden></canvas>
+  <div id="person" hidden>
+    <p>Person in view</p>
+    <p>Name <input id="pname"></p>
+    <p>Profile <input id="pwho" size="70"></p>
+    <p>Where met <input id="pmet" size="70"></p>
+    <p>Remember <input id="prem" size="70"></p>
+    <p><button id="psave">Save</button> <span id="psaved"></span></p>
+  </div>
+  <script src="/js/util/peerjs.min.js"></script>
+  <script src="/server/client.js"></script>
+  <script type="module" src="./station.js"></script>
+</body>
+</html>

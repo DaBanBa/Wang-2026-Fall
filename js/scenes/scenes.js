@@ -17,6 +17,7 @@ export default () => {
             { name: "PLEASE HOLD", path: "./PLEASEHOLD/game.js", public: true },
             { name: "Overcooked" , path: "./Overcooked/game.js", public: true },
             { name: "aiquery"   , path: "./aiquery.js"   , public: true },
+            { name: "ICanSeeYou", path: "./ICanSeeYou/scene.js", public: true },
       ]
    };
 }
