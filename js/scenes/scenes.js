@@ -18,6 +18,8 @@ export default () => {
             { name: "Overcooked" , path: "./Overcooked/game.js", public: true },
             { name: "aiquery"   , path: "./aiquery.js"   , public: true },
             { name: "ICanSeeYou", path: "./ICanSeeYou/scene.js", public: true },
+            { name: "SO101"     , path: "./SO101.js"     , public: true },
+            { name: "SO101_parts", path: "./SO101_parts.js", public: true },
       ]
    };
 }
