@@ -20,6 +20,8 @@ export default () => {
             { name: "ICanSeeYou", path: "./ICanSeeYou/scene.js", public: true },
             { name: "SO101"     , path: "./SO101.js"     , public: true },
             { name: "SO101_parts", path: "./SO101_parts.js", public: true },
+            { name: "inception" , path: "./inception/inception.js", public: true },
+            { name: "SO101"     , path: "./SO101test/SO101.js"     , public: true },
       ]
    };
 }
