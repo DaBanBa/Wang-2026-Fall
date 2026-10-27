@@ -24,6 +24,8 @@ export default () => {
             { name: "SO101"     , path: "./SO101test/SO101.js"     , public: true },
             { name: "bouncing"   , path: "./bouncing.js"   , public: true },
             { name: "widgets"    , path: "./widgets.js"    , public: true },
+            { name: "SO101Interaction", path: "./SO101Interaction/SO101.js", public: true },
+            { name: "Rocket League", path: "./MarioCart/MarioCart.js", public: true },
       ]
    };
 }
