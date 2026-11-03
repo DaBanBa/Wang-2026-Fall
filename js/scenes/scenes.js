@@ -26,6 +26,8 @@ export default () => {
             { name: "widgets"    , path: "./widgets.js"    , public: true },
             { name: "SO101Interaction", path: "./SO101Interaction/SO101.js", public: true },
             { name: "Rocket League", path: "./MarioCart/MarioCart.js", public: true },
+            { name: "Experiement", path: "./Experiement.js", public: true },
+            { name: "DnD", path: "./DnD/game.js", public: true },
       ]
    };
 }

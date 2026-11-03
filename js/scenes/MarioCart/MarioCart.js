@@ -1,16 +1,5 @@
 /*
    1v1 Rocket League
-   Two players, Kenney's CC0 karts (see models/License.txt), one ball.
-
-   The steering wheel is the line between the left and right controllers.
-   Tilt that line down on the left to turn left, down on the right to turn right.
-   Right trigger is gas. Left trigger is brake.
-   Left grip, or A / X, jumps. Jump again in the air to dodge.
-   Squeeze both grips to seat the cockpit on your head.
-   Desktop preview: J / L steer, I gas, K brake, Space jump.
-
-   Orange defends the near orange goal and scores in the blue goal.
-   Blue does the opposite. First to 5.
 */
 
 import * as cg from "../../render/core/cg.js";
@@ -183,7 +172,6 @@ const bounceCars = (a, b) => {
    return true;
 };
 
-// Car is heavy, ball is light. Same separating axis as the bouncing demo.
 const hitBall = (car, sphere, own) => {
    let c = hitCenter(car);
    let d = cg.subtract(sphere.p, c);
