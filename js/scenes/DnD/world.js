@@ -1,7 +1,7 @@
 // Board queries, pawn spawn, and the pack.
 
 import * as cg from '../../render/core/cg.js';
-import { TILE, HALF, KIND, GROUND, foeSheet, itemLabel } from './data.js';
+import { N, TILE, HALF, KIND, GROUND, foeSheet, itemLabel } from './data.js';
 import { makeToken, dropToken } from './models.js';
 import { clamp, inb, tileX, tileZ } from './input.js';
 
