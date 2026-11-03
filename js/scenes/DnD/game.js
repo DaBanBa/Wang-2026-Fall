@@ -1,12 +1,5 @@
 /*
-   Miniature D&D board — pixel-art standees on painted tiles. God Mode
-   paints the 8x8 grid; Adventurer Mode uses 2024 ability checks and attack rolls.
-
-   Add this line to js/scenes/scenes.js to load the scene:
-      { name: "DnD", path: "./DnD/game.js", public: true },
-
-   Play is split beside this file: input, world, sheets, picking, dock,
-   table, adventure, combat, and pose. data/ holds the rules. ui/ holds the cards.
+   D&D
 */
 
 import * as cg from '../../render/core/cg.js';
