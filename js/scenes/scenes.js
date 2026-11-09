@@ -28,6 +28,7 @@ export default () => {
             { name: "Rocket League", path: "./MarioCart/MarioCart.js", public: true },
             { name: "Experiement", path: "./Experiement.js", public: true },
             { name: "DnD", path: "./DnD/game.js", public: true },
+            { name: "minime"     , path: "./minime.js"     , public: true },
       ]
    };
 }
